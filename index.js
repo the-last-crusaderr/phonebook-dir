@@ -9,6 +9,9 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 app.use(morgan('tiny'))
+app.use(express.static('dist'))
+
+
 
 app.use((req, res, next) => {
   if (req.method === 'POST') {
