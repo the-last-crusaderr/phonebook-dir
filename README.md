@@ -4,5 +4,5 @@ https://phonebook-dir.onrender.com
 
 TODO:-
 
-1. Include put restful method.
-2. Configure lint for static analyis of source code.
+1. Include put to complete basic restful method.
+2. Configure lint for static analysis of source code.
