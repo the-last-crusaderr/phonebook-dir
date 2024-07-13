@@ -51,6 +51,17 @@ app.post('/api/persons',(req,res)=> {
 })
 
 
+app.delete('/api/persons/:id', (request, response) => {
+  Persons.findByIdAndDelete(request.params.id)
+    .then(result => {
+      console.log(typeof request.params.id)	    
+      response.status(204).end()
+    })
+    .catch(error => console.log(`${error} is detected`))
+})
+
+
+
 
 app.get('/info',(req,res)=> {
 	const currentTime = new Date(Date.now())
