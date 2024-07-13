@@ -1,7 +1,14 @@
-let persons = require('./persons')
+// let persons = require('./persons')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+require('dotenv').config()
+
+console.log(process.env.MONGODB_URL)
+const Persons  = require('./models/mongo')
+
+console.log("Info about persons",typeof Persons, Persons)
+
 
 const app = express()
 
@@ -24,12 +31,40 @@ const PORT = process.env.PORT  || 3001
 
 
 app.get('/api/persons',(req,res)=> {
-       res.send(persons)	
+       Persons.find({}).then( person => {
+       res.send(person)	
        console.log(`All available resources has been sent`)
+       })
+})
+
+
+app.post('/api/persons',(req,res)=> {
+	
+	let newObj =  new Persons( {
+          id : Math.floor(Math.random() * 20000),
+	 name :  req.body.name,
+	 number : req.body.number
 	})
+	console.log(newObj)
+        newObj.save().then( item => res.status(201).send("Person has been saved")  )
+        .catch( err => res.status(500).send("Unable to save the person: " + err.message) )
+})
+
+
+
+app.get('/info',(req,res)=> {
+	const currentTime = new Date(Date.now())
+	res.send(`Phonebook has info for many people <br/>
+          ${currentTime}`
+	)
+	})
+
+
 
 // for single resource
 
+
+/*
 app.get('/api/persons/:id',(req,res) => {
 	const id = req.params.id
         const person = persons.find( (item) => id == item.id  )
@@ -74,8 +109,7 @@ app.post('/api/persons/',(req,res)=> {
         res.status(201).json(newResource)
 	})
 
-
+*/
 
 app.listen(PORT, () =>
 console.log(`app is running on ${PORT}`))
-//console.log(persons)

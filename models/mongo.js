@@ -1,26 +1,27 @@
 const mongoose = require('mongoose')
 
-
+/* this app was used to take password as an argument
 if(process.argv.length < 3){
 	console.log('Please provide the password for mongoose as arguments')
         process.exit(1)
 	}
 
 const password = process.argv[2]
-const uname = 'crusaderr'
+*/
 
-//console.log(password)
 
-const url = `mongodb+srv://crusaderr:${password}@cluster0.eoriqjp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+const url = process.env.MONGODB_URL
 
-mongoose.set('debug',true)
-
-//console.log('Before connection')
 mongoose.connect(url)
-//console.log('After connection')
+  .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch(error => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
 
-
-
+ 
+mongoose.set('debug',true)
 mongoose.set('strictQuery',false)
 
 const personSchema = new mongoose.Schema({
@@ -29,9 +30,9 @@ const personSchema = new mongoose.Schema({
    number : String 
 	})
 
-const Person = new mongoose.model('Person',personSchema)
+module.exports = mongoose.model('Person',personSchema)
 
-
+/*      testing the working of mongodb by inserting few dummy data
 
 if(process.argv[3] && process.argv[4]){
 
@@ -54,3 +55,5 @@ newObj.save().then( () => {
 	}  )
 }
 
+
+*/
